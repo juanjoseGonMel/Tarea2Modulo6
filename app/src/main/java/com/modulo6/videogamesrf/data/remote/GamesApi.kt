@@ -40,7 +40,7 @@ interface GamesApi {
         @Query("id") id: String?
     ): Call<GameDetailDto>*/
 
-    @GET("game_detail/{id}")
+    @GET("Pokemons/{id}")
     fun getGameDetail(
         @Path("id") id: String?
     ): Call<GameDetailDto>

@@ -4,13 +4,30 @@ import com.google.gson.annotations.SerializedName
 
 data class GameDetailDto(
 
-    @SerializedName("title")
-    var title : String? = null,
+    @SerializedName("id")
+    val id: Int? = null,
 
-    @SerializedName("image")
-    var image: String? = null,
+    @SerializedName("nombre")
+    val nombre: String,
 
-    @SerializedName("long_desc")
-    var longDesc : String? = null
+    @SerializedName("tipo")
+    val tipo: String,
 
+    @SerializedName("habilidades")
+    val habilidades: String,
+
+    @SerializedName("movimientos")
+    val movimientos: String,
+
+    @SerializedName("url_imagen")
+    val urlImagen: String,
+
+    @SerializedName("descripcion")
+    val descripcion: String,
+
+    @SerializedName("grupo_huevo")
+    val grupoHuevo: String,
+
+    @SerializedName("generacion")
+    val generacion: Int
 )

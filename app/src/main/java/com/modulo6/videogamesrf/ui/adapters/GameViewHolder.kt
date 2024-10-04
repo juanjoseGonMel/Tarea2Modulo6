@@ -11,11 +11,12 @@ class GameViewHolder(
 ): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(game: GameDto){
-        binding.tvTitle.text = game.title
+        binding.tvTitle.text = game.nombre
+        binding.tvReleased.text = game.id
         //Glide
 
         Glide.with(binding.root.context)
-            .load(game.thumbnail)
+            .load(game.imagenUrl)
             .into(binding.ivThumbnail)
 
         //Piccaso
