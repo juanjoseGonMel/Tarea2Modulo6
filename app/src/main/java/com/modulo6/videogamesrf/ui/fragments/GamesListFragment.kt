@@ -154,8 +154,8 @@ class GamesListFragment : Fragment() {
         binding.btnRetry.visibility = View.VISIBLE
     }
 
-    private fun reloadFragment() {
+    /*private fun reloadFragment() {
         parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
-    }
+    }*/
 
 }

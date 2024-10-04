@@ -1,5 +1,6 @@
 package com.modulo6.videogamesrf.ui.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
@@ -98,18 +99,19 @@ class GameDetailFragment : Fragment() {
         gameId?.let { id ->
             val call: Call<GameDetailDto> = repository.getGamesDetail(id)
             call.enqueue(object : Callback<GameDetailDto> {
+                @SuppressLint("StringFormatInvalid")
                 override fun onResponse(p0: Call<GameDetailDto>, response: Response<GameDetailDto>) {
                     binding.pbLoading.visibility = View.GONE
 
                     if (response.isSuccessful) {
                         response.body()?.let { gameDetail ->
-                            binding.tvTitle.text = getString(R.string.NombrePokemon) + ": " + gameDetail.nombre
-                            binding.tvLongDesc.text = getString(R.string.DescripcionPokemon) + ": " + gameDetail.descripcion
-                            binding.tvMov.text = getString(R.string.MovimientosPokemon) + ": " + gameDetail.movimientos
-                            binding.tvType.text = getString(R.string.TipoPokemon) + ": " + gameDetail.tipo
-                            binding.tvHuevo.text = getString(R.string.HuevoPokemon) + ": " + gameDetail.grupoHuevo
-                            binding.tvHabilidad.text = getString(R.string.HabilidadPokemon) + ": " + gameDetail.habilidades
-                            binding.tvGeneracion.text = getString(R.string.GeneracionPokemon) + ": " + gameDetail.generacion.toString()
+                            binding.tvTitle.text = getString(R.string.NombrePokemon, gameDetail.nombre)
+                            binding.tvLongDesc.text = getString(R.string.DescripcionPokemon, gameDetail.descripcion)
+                            binding.tvMov.text = getString(R.string.MovimientosPokemon, gameDetail.movimientos)
+                            binding.tvType.text = getString(R.string.TipoPokemon, gameDetail.tipo)
+                            binding.tvHuevo.text = getString(R.string.HuevoPokemon, gameDetail.grupoHuevo)
+                            binding.tvHabilidad.text = getString(R.string.HabilidadPokemon, gameDetail.habilidades)
+                            binding.tvGeneracion.text = getString(R.string.GeneracionPokemon, gameDetail.generacion)
                             Glide.with(binding.root.context)
                                 .load(gameDetail.urlImagen)
                                 .into(binding.ivImage)

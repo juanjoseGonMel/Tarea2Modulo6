@@ -14,4 +14,13 @@
     <string name="error_server">Error del servidor. Por favor, intenta de nuevo más tarde.</string>
     <string name="error_no_data">No hay datos disponibles.</string>
     <string name="ReConexion">Reintentar.</string>
+    <string name="splashpokemon">Logo inicio</string>
+    <string name="NombrePokemonV">Nombre del pokemon: %1$s</string>
+    <string name="IDPokemonV">Numero de la pokedex: %1$s</string>
+    <string name="DescripcionPokemonV">Descripcion del pokemon: %1$s</string>
+    <string name="TipoPokemonV">Tipos del pokemon: %1$s</string>
+    <string name="HabilidadPokemonV">Habilidad del pokemon: %1$s</string>
+    <string name="MovimientosPokemonV">Movimientos del pokemon: %1$s</string>
+    <string name="HuevoPokemonV">Grupo huevo que pertenece el pokemon: %1$s</string>
+    <string name="GeneracionPokemonV">Generacion donde nacio el pokemon: %1$d</string>
 </resources>
