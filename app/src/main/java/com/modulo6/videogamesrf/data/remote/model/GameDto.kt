@@ -7,10 +7,10 @@ data class GameDto(
     @SerializedName("id")
     var id : String? = null,
 
-    @SerializedName("thumbnail")
-    var thumbnail : String? = null,
+    @SerializedName("nombre")
+    var nombre : String? = null,
 
-    @SerializedName("title")
-    var title : String? = null
+    @SerializedName("imagen_url")
+    var imagenUrl : String? = null,
 
 )

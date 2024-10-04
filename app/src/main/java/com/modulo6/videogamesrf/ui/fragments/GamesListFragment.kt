@@ -44,7 +44,7 @@ class GamesListFragment : Fragment() {
         repository = (requireActivity().application as VideoGamesRFApp).repository
 
         //val call : Call<MutableList<GameDto>> = repository.getGames("cm/games/games_list.php")
-        val call : Call<MutableList<GameDto>> = repository.getGames("games_list")
+        val call : Call<MutableList<GameDto>> = repository.getGames("Pokemons/PokeList")
 
 
         call.enqueue(object: Callback<MutableList<GameDto>>{

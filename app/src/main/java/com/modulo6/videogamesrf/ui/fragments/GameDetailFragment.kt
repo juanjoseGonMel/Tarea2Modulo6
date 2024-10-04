@@ -56,10 +56,10 @@ class GameDetailFragment : Fragment() {
             call.enqueue(object : Callback<GameDetailDto>{
                 override fun onResponse(p0: Call<GameDetailDto>, response: Response<GameDetailDto>) {
                     binding.pbLoading.visibility = View.GONE
-                    binding.tvTitle.text = response.body()?.title
-                    binding.tvLongDesc.text = response.body()?.longDesc
+                    binding.tvTitle.text = response.body()?.nombre
+                    binding.tvLongDesc.text = response.body()?.descripcion
                     Glide.with(binding.root.context)
-                        .load(response.body()?.image)
+                        .load(response.body()?.urlImagen)
                         .into(binding.ivImage)
 
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
