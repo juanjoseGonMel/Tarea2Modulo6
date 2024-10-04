@@ -44,7 +44,7 @@
                         android:paddingBottom="10dp"
                         android:textColor="@color/white"
                         android:textSize="25sp"
-                        tools:text="Title" />
+                        tools:text="@string/NombrePokemon" />
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/ivImage"
@@ -54,6 +54,74 @@
                         android:layout_marginEnd="20dp"
                         app:riv_corner_radius="10dp"
                         tools:src="@mipmap/ic_launcher" />
+
+
+                        <TextView
+                            android:id="@+id/tvType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:text="@string/TipoPokemon" />
+
+                        <TextView
+                            android:id="@+id/tvHabilidad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:text="@string/HabilidadPokemon" />
+
+
+                        <TextView
+                            android:id="@+id/tvMov"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:text="@string/MovimientosPokemon" />
+
+                        <TextView
+                            android:id="@+id/tvHuevo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:text="@string/HuevoPokemon" />
+
+                        <TextView
+                            android:id="@+id/tvGeneracion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/ubuntu"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            tools:text="@string/GeneracionPokemon" />
+
 
                     <TextView
                         android:id="@+id/tvLongDesc"
@@ -66,7 +134,7 @@
                         android:paddingBottom="10dp"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        tools:text="Description" />
+                        tools:text="@string/DescripcionPokemon" />
                 </LinearLayout>
             </ScrollView>
 
@@ -78,6 +146,27 @@
                 android:indeterminateDrawable="@drawable/loading_anim"
                 android:indeterminateDuration="1500"
                 />
+
+            <TextView
+                android:id="@+id/tvErrorMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp"
+                android:layout_marginTop="350dp"
+                android:text="@string/error_no_data"/>
+
+            <Button
+                android:id="@+id/btnRetry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/ReConexion"
+                android:layout_below="@id/tvErrorMessage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
 
         </RelativeLayout>
 

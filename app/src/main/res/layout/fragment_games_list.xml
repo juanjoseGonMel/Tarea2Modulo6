@@ -15,6 +15,27 @@
         android:indeterminateDuration="1500"
         />
 
+    <TextView
+        android:id="@+id/tvErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="30sp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="400dp"
+        android:text="@string/error_no_data"/>
+
+    <Button
+        android:id="@+id/btnRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/ReConexion"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="450dp"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGames"
         android:layout_width="match_parent"

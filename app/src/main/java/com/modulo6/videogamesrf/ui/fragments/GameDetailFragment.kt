@@ -51,13 +51,26 @@ class GameDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         repository = (requireActivity().application as VideoGamesRFApp).repository
+
+        binding.btnRetry.setOnClickListener {
+            loadGameDetails()
+        }
+
+        loadGameDetails()
+
+        /*
         gameId?.let { id ->
             val call: Call<GameDetailDto> = repository.getGamesDetail(id)
             call.enqueue(object : Callback<GameDetailDto>{
                 override fun onResponse(p0: Call<GameDetailDto>, response: Response<GameDetailDto>) {
                     binding.pbLoading.visibility = View.GONE
-                    binding.tvTitle.text = response.body()?.nombre
-                    binding.tvLongDesc.text = response.body()?.descripcion
+                    binding.tvTitle.text = getString(R.string.NombrePokemon) + ": " + response.body()?.nombre
+                    binding.tvLongDesc.text = getString(R.string.DescripcionPokemon) + ": " + response.body()?.descripcion
+                    binding.tvMov.text = getString(R.string.MovimientosPokemon) + ": " + response.body()?.movimientos
+                    binding.tvType.text = getString(R.string.TipoPokemon) + ": " + response.body()?.tipo
+                    binding.tvHuevo.text = getString(R.string.HuevoPokemon) + ": " + response.body()?.grupoHuevo
+                    binding.tvHabilidad.text = getString(R.string.HabilidadPokemon) + ": " + response.body()?.habilidades
+                    binding.tvGeneracion.text = getString(R.string.GeneracionPokemon) + ": " + response.body()?.generacion.toString()
                     Glide.with(binding.root.context)
                         .load(response.body()?.urlImagen)
                         .into(binding.ivImage)
@@ -73,6 +86,60 @@ class GameDetailFragment : Fragment() {
 
             })
         }
+        */
+
+    }
+
+    private fun loadGameDetails() {
+        binding.pbLoading.visibility = View.VISIBLE
+        binding.tvErrorMessage.visibility = View.GONE
+        binding.btnRetry.visibility = View.GONE
+
+        gameId?.let { id ->
+            val call: Call<GameDetailDto> = repository.getGamesDetail(id)
+            call.enqueue(object : Callback<GameDetailDto> {
+                override fun onResponse(p0: Call<GameDetailDto>, response: Response<GameDetailDto>) {
+                    binding.pbLoading.visibility = View.GONE
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { gameDetail ->
+                            binding.tvTitle.text = getString(R.string.NombrePokemon) + ": " + gameDetail.nombre
+                            binding.tvLongDesc.text = getString(R.string.DescripcionPokemon) + ": " + gameDetail.descripcion
+                            binding.tvMov.text = getString(R.string.MovimientosPokemon) + ": " + gameDetail.movimientos
+                            binding.tvType.text = getString(R.string.TipoPokemon) + ": " + gameDetail.tipo
+                            binding.tvHuevo.text = getString(R.string.HuevoPokemon) + ": " + gameDetail.grupoHuevo
+                            binding.tvHabilidad.text = getString(R.string.HabilidadPokemon) + ": " + gameDetail.habilidades
+                            binding.tvGeneracion.text = getString(R.string.GeneracionPokemon) + ": " + gameDetail.generacion.toString()
+                            Glide.with(binding.root.context)
+                                .load(gameDetail.urlImagen)
+                                .into(binding.ivImage)
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                                binding.tvLongDesc.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+                        } ?: showError(getString(R.string.error_no_data))
+                    } else {
+                        showError(getString(R.string.error_server))
+                    }
+                }
+
+                override fun onFailure(p0: Call<GameDetailDto>, p1: Throwable) {
+                    binding.pbLoading.visibility = View.GONE
+                    showError(getString(R.string.error_network))
+                }
+            })
+        }
+    }
+
+
+    private fun showError(message: String) {
+        binding.tvErrorMessage.text = message
+        binding.tvErrorMessage.visibility = View.VISIBLE
+        binding.btnRetry.visibility = View.VISIBLE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     companion object {

@@ -12,6 +12,7 @@ class GameViewHolder(
 
     fun bind(game: GameDto){
         binding.tvTitle.text = game.nombre
+        binding.tvReleased.text = game.id
         //Glide
 
         Glide.with(binding.root.context)

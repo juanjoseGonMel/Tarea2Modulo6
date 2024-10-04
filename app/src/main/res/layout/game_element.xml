@@ -45,25 +45,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
-        tools:text="Title" />
+        tools:text="@string/NombrePokemon" />
 
 
-    <TextView
-        android:id="@+id/tvDeveloper"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/ubuntu"
-        android:includeFontPadding="false"
-        android:text="Nintendo"
-        android:textColor="#3FE0DD"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/guideline5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@id/guideline6" />
 
     <TextView
         android:id="@+id/tvReleased"
@@ -74,7 +58,7 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/ubuntu"
         android:includeFontPadding="false"
-        android:text="Released: 2020"
+        android:text="@string/IDPokemon"
         android:textColor="#4A5B82"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,22 +66,6 @@
         app:layout_constraintBottom_toBottomOf="@id/guideline4"
         app:layout_constraintTop_toTopOf="@id/guideline5" />
 
-    <TextView
-        android:id="@+id/tvRating"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/ubuntu"
-        android:includeFontPadding="false"
-        android:text="ESRB Rating: E-Everyone"
-        android:textColor="#F5DC53"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@id/guideline4"
-        app:layout_constraintBottom_toBottomOf="@id/guideline3"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

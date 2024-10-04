@@ -24,11 +24,6 @@ class GamesListFragment : Fragment() {
 
     private lateinit var repository: GameRepository
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +39,8 @@ class GamesListFragment : Fragment() {
         repository = (requireActivity().application as VideoGamesRFApp).repository
 
         //val call : Call<MutableList<GameDto>> = repository.getGames("cm/games/games_list.php")
+        /*
         val call : Call<MutableList<GameDto>> = repository.getGames("Pokemons/PokeList")
-
-
         call.enqueue(object: Callback<MutableList<GameDto>>{
             override fun onResponse(
                 p0: Call<MutableList<GameDto>>,
@@ -54,32 +48,114 @@ class GamesListFragment : Fragment() {
             ) {
                 binding.pbLoading.visibility = View.GONE
 
-                response.body()?.let { games ->
-                    binding.rvGames.apply {
-                        layoutManager = LinearLayoutManager(requireContext())
-                        adapter = GameAdapter(games){game ->
-                            game.id?.let { id ->
-                                requireActivity().supportFragmentManager
-                                    .beginTransaction()
-                                    .replace(R.id.fragment_container, GameDetailFragment.newInstance(id))
-                                    .addToBackStack(null)
-                                    .commit()
+                if (response.isSuccessful) {
+                    response.body()?.let { games ->
+                        if (games.isNotEmpty()) {
+                            binding.rvGames.apply {
+                                layoutManager = LinearLayoutManager(requireContext())
+                                adapter = GameAdapter(games) { game ->
+                                    game.id?.let { id ->
+                                        requireActivity().supportFragmentManager
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container, GameDetailFragment.newInstance(id))
+                                            .addToBackStack(null)
+                                            .commit()
+                                    }
+                                }
                             }
+                        }else {
+                            binding.tvErrorMessage.text = getString(R.string.error_no_data)
+                            binding.tvErrorMessage.visibility = View.VISIBLE
                         }
                     }
+                } else {
+                    binding.tvErrorMessage.text = getString(R.string.error_server)
+                    binding.tvErrorMessage.visibility = View.VISIBLE
                 }
+
+
+
             }
 
             override fun onFailure(p0: Call<MutableList<GameDto>>, p1: Throwable) {
-
+                binding.pbLoading.visibility = View.GONE
+                binding.tvErrorMessage.text = getString(R.string.error_network)
+                binding.tvErrorMessage.visibility = View.VISIBLE
             }
 
         })
+        */
+
+        binding.btnRetry.setOnClickListener {
+            loadGames()
+        }
+
+        loadGames()
+
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        _binding = null
     }
 
+    private fun loadGames() {
+        binding.pbLoading.visibility = View.VISIBLE
+        binding.tvErrorMessage.visibility = View.GONE
+        binding.btnRetry.visibility = View.GONE
+
+        val call : Call<MutableList<GameDto>> = repository.getGames("Pokemons/PokeList")
+
+
+        call.enqueue(object: Callback<MutableList<GameDto>> {
+            override fun onResponse(
+                p0: Call<MutableList<GameDto>>,
+                response: Response<MutableList<GameDto>>
+            ) {
+                binding.pbLoading.visibility = View.GONE
+
+                if (response.isSuccessful) {
+                    response.body()?.let { games ->
+                        if (games.isNotEmpty()) {
+                            binding.rvGames.apply {
+                                layoutManager = LinearLayoutManager(requireContext())
+                                adapter = GameAdapter(games) { game ->
+                                    game.id?.let { id ->
+                                        requireActivity().supportFragmentManager
+                                            .beginTransaction()
+                                            .replace(R.id.fragment_container, GameDetailFragment.newInstance(id))
+                                            .addToBackStack(null)
+                                            .commit()
+                                    }
+                                }
+                            }
+                        } else {
+                            showError(getString(R.string.error_no_data))
+                        }
+                    }
+                } else {
+                    showError(getString(R.string.error_server))
+                }
+            }
+
+            override fun onFailure(p0: Call<MutableList<GameDto>>, p1: Throwable) {
+                binding.pbLoading.visibility = View.GONE
+                showError(getString(R.string.error_network))
+            }
+        })
+
+
+    }
+
+    private fun showError(message: String) {
+        binding.tvErrorMessage.text = message
+        binding.tvErrorMessage.visibility = View.VISIBLE
+        binding.btnRetry.visibility = View.VISIBLE
+    }
+
+    private fun reloadFragment() {
+        parentFragmentManager.beginTransaction().detach(this).attach(this).commit()
+    }
 
 }
