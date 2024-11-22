@@ -135,7 +135,22 @@
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         tools:text="@string/DescripcionPokemon" />
+
+
+                    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                        android:id="@+id/vvVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="10dp"
+                        />
+
+
+
                 </LinearLayout>
+
             </ScrollView>
 
             <ProgressBar

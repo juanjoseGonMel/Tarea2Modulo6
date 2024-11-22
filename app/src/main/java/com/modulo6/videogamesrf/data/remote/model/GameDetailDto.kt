@@ -22,6 +22,9 @@ data class GameDetailDto(
     @SerializedName("url_imagen")
     val urlImagen: String,
 
+    @SerializedName("url_video")
+    val urlVideo: String,
+
     @SerializedName("descripcion")
     val descripcion: String,
 
