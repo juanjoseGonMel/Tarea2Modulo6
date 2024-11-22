@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.modulo6.videogamesrf"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.modulo6.videogamesrf"
@@ -47,23 +47,26 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("androidx.core:core-splashscreen:1.0.0")
 
     //Para retrofit y Gson
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-//Adicional para el interceptor
+    //Adicional para el interceptor
     implementation(libs.logging.interceptor)
 
-//Glide y Picasso
+    //Glide y Picasso
     implementation(libs.glide)
     implementation(libs.picasso)
 
-//Para las corrutinas con alcance lifecycle
+    //Para las corrutinas con alcance lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-//Imágenes con bordes redondeados
+    //Imágenes con bordes redondeados
     implementation(libs.roundedimageview)
+
+    implementation(libs.core)
 
 
     testImplementation(libs.junit)

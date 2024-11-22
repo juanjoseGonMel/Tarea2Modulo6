@@ -2,6 +2,7 @@ package com.modulo6.videogamesrf.ui.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.text.LineBreaker
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,8 @@ import com.modulo6.videogamesrf.data.GameRepository
 import com.modulo6.videogamesrf.data.remote.model.GameDetailDto
 import com.modulo6.videogamesrf.databinding.FragmentGameDetailBinding
 import com.modulo6.videogamesrf.util.Constants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +35,7 @@ class GameDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var repository: GameRepository
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +62,9 @@ class GameDetailFragment : Fragment() {
         }
 
         loadGameDetails()
+
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.accumula_town)
+        mediaPlayer.start()
 
         /*
         gameId?.let { id ->
@@ -105,13 +112,21 @@ class GameDetailFragment : Fragment() {
 
                     if (response.isSuccessful) {
                         response.body()?.let { gameDetail ->
-                            binding.tvTitle.text = getString(R.string.NombrePokemon, gameDetail.nombre)
-                            binding.tvLongDesc.text = getString(R.string.DescripcionPokemon, gameDetail.descripcion)
-                            binding.tvMov.text = getString(R.string.MovimientosPokemon, gameDetail.movimientos)
-                            binding.tvType.text = getString(R.string.TipoPokemon, gameDetail.tipo)
-                            binding.tvHuevo.text = getString(R.string.HuevoPokemon, gameDetail.grupoHuevo)
-                            binding.tvHabilidad.text = getString(R.string.HabilidadPokemon, gameDetail.habilidades)
-                            binding.tvGeneracion.text = getString(R.string.GeneracionPokemon, gameDetail.generacion)
+                            binding.tvTitle.text = gameDetail.nombre
+                            binding.tvLongDesc.text = gameDetail.descripcion
+                            binding.tvMov.text = gameDetail.movimientos
+                            binding.tvType.text = gameDetail.tipo
+                            binding.tvHuevo.text = gameDetail.grupoHuevo
+                            binding.tvHabilidad.text = gameDetail.habilidades
+                            binding.tvGeneracion.text = gameDetail.generacion.toString()
+
+                            binding.vvVideo.addYouTubePlayerListener(object : AbstractYouTubePlayerListener(){
+                                override fun onReady(youTubePlayer: YouTubePlayer) {
+                                    youTubePlayer.loadVideo(gameDetail.urlVideo, 0f)
+                                }
+                            })
+                            lifecycle.addObserver(binding.vvVideo)
+
                             Glide.with(binding.root.context)
                                 .load(gameDetail.urlImagen)
                                 .into(binding.ivImage)
@@ -141,6 +156,8 @@ class GameDetailFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        mediaPlayer.release()
+        binding.vvVideo.release()
         _binding = null
     }
 

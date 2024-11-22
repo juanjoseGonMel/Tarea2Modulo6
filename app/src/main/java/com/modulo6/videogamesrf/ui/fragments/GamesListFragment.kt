@@ -1,5 +1,6 @@
 package com.modulo6.videogamesrf.ui.fragments
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ class GamesListFragment : Fragment() {
 
     private lateinit var repository: GameRepository
 
+    //private var mediaPlayer: MediaPlayer = MediaPlayer.create(this, R.raw.accumula_town)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
