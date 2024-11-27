@@ -148,7 +148,32 @@
                         />
 
 
+                    <TextView
+                        android:id="@+id/tvTitleMap"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/ubuntu"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="25dp"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        tools:text="@string/RegionVive" />
 
+
+                    <!-- FrameLayout para el mapa de Google Maps -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp">
+
+                        <fragment
+                            android:id="@+id/map"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    </FrameLayout>
 
 
 
