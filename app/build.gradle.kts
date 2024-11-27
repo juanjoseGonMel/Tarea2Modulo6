@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -67,6 +68,7 @@ dependencies {
     implementation(libs.roundedimageview)
 
     implementation(libs.core)
+    implementation(libs.firebase.auth)
 
 
     testImplementation(libs.junit)
