@@ -1,7 +1,13 @@
 package com.modulo6.videogamesrf.ui.fragments
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.text.LineBreaker
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -10,7 +16,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.modulo6.videogamesrf.R
 import com.modulo6.videogamesrf.application.VideoGamesRFApp
 import com.modulo6.videogamesrf.data.GameRepository
@@ -22,12 +39,11 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
 
 
 private const val GAME_ID = "game_id"
 
-class GameDetailFragment : Fragment() {
+class GameDetailFragment : Fragment(), OnMapReadyCallback {
 
     private var gameId: String? = null
 
@@ -36,6 +52,56 @@ class GameDetailFragment : Fragment() {
 
     private lateinit var repository: GameRepository
     private lateinit var mediaPlayer: MediaPlayer
+
+
+    //Propiedad global para el mapa
+    private lateinit var map: GoogleMap
+    private lateinit var locationManager: LocationManager
+
+    //Para el permiso de la localizacion
+    private var fineLocationPermissionGranted = false
+
+    //Latitud y longitud
+    private var lati:Double = 0.0
+    private var longi:Double = 0.0
+
+
+    private val permissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){ isGranted ->
+        if(isGranted){
+            //Se concedió el permiso
+            actionPermissionGranted()
+        }else{
+            if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle(getString(R.string.permiso))
+                    .setMessage(getString(R.string.permisoMsg))
+                    .setPositiveButton(getString(R.string.btnEntendido)){ _, _ ->
+                        updateOrRequestPermissions()
+                    }
+                    .setNegativeButton(getString(R.string.btnSalir)){ dialog, _ ->
+                        dialog.dismiss()
+                        requireActivity().finish()
+                    }
+                    .create()
+                    .show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.PermisoNegadoPermanente),
+                    Toast.LENGTH_SHORT
+                ).show()
+                requireActivity().finish()
+            }
+        }
+    }
+
+
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,48 +122,34 @@ class GameDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         repository = (requireActivity().application as VideoGamesRFApp).repository
-
-        binding.btnRetry.setOnClickListener {
-            loadGameDetails()
-        }
-
+        binding.btnRetry.setOnClickListener { loadGameDetails() }
         loadGameDetails()
-
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.accumula_town)
         mediaPlayer.start()
 
-        /*
-        gameId?.let { id ->
-            val call: Call<GameDetailDto> = repository.getGamesDetail(id)
-            call.enqueue(object : Callback<GameDetailDto>{
-                override fun onResponse(p0: Call<GameDetailDto>, response: Response<GameDetailDto>) {
-                    binding.pbLoading.visibility = View.GONE
-                    binding.tvTitle.text = getString(R.string.NombrePokemon) + ": " + response.body()?.nombre
-                    binding.tvLongDesc.text = getString(R.string.DescripcionPokemon) + ": " + response.body()?.descripcion
-                    binding.tvMov.text = getString(R.string.MovimientosPokemon) + ": " + response.body()?.movimientos
-                    binding.tvType.text = getString(R.string.TipoPokemon) + ": " + response.body()?.tipo
-                    binding.tvHuevo.text = getString(R.string.HuevoPokemon) + ": " + response.body()?.grupoHuevo
-                    binding.tvHabilidad.text = getString(R.string.HabilidadPokemon) + ": " + response.body()?.habilidades
-                    binding.tvGeneracion.text = getString(R.string.GeneracionPokemon) + ": " + response.body()?.generacion.toString()
-                    Glide.with(binding.root.context)
-                        .load(response.body()?.urlImagen)
-                        .into(binding.ivImage)
 
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                        binding.tvLongDesc.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+        //Mapa
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
-                }
-
-                override fun onFailure(p0: Call<GameDetailDto>, p1: Throwable) {
-
-                }
-
-            })
-        }
-        */
+        //locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        binding.vvVideo.release()
+
+        //locationManager.removeUpdates(this)
+
+        _binding = null
+    }
+
+
+
+
+    //Funciones normales
     private fun loadGameDetails() {
         binding.pbLoading.visibility = View.VISIBLE
         binding.tvErrorMessage.visibility = View.GONE
@@ -119,6 +171,10 @@ class GameDetailFragment : Fragment() {
                             binding.tvHuevo.text = gameDetail.grupoHuevo
                             binding.tvHabilidad.text = gameDetail.habilidades
                             binding.tvGeneracion.text = gameDetail.generacion.toString()
+
+                            //Asignamos latitud y longitud
+                            lati = gameDetail.latitud
+                            longi = gameDetail.longitud
 
                             binding.vvVideo.addYouTubePlayerListener(object : AbstractYouTubePlayerListener(){
                                 override fun onReady(youTubePlayer: YouTubePlayer) {
@@ -147,18 +203,10 @@ class GameDetailFragment : Fragment() {
         }
     }
 
-
     private fun showError(message: String) {
         binding.tvErrorMessage.text = message
         binding.tvErrorMessage.visibility = View.VISIBLE
         binding.btnRetry.visibility = View.VISIBLE
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-        binding.vvVideo.release()
-        _binding = null
     }
 
     companion object {
@@ -170,4 +218,95 @@ class GameDetailFragment : Fragment() {
                 }
             }
     }
+    //Normales
+
+
+
+    //Funciones mapa
+
+    override fun onResume() {
+        super.onResume()
+        if (!::map.isInitialized) return
+        if (!fineLocationPermissionGranted){
+            updateOrRequestPermissions()
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private fun actionPermissionGranted(){
+        map.isMyLocationEnabled = true
+        /*
+        val locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            2000,
+            10F,
+            this
+        )
+
+         */
+    }
+
+
+
+    private fun updateOrRequestPermissions() {
+        //Revisando el permiso
+        val hasFineLocationPermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        fineLocationPermissionGranted = hasFineLocationPermission
+
+        if (!fineLocationPermissionGranted) {
+            //Pedimos el permiso
+            permissionsLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }else{
+            //Tenemos los permisos
+            actionPermissionGranted()
+        }
+
+    }
+
+    private fun createMarker(){
+        val coordinates = LatLng(lati,longi)
+        val marker = MarkerOptions()
+            .position(coordinates)
+            .title(getString(R.string.PokemonAvistado))
+            .snippet(getString(R.string.UbicacionPokemon))
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.iconpoke))
+
+        map.addMarker(marker)
+
+        map.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(coordinates, 18f),
+            4000,
+            null
+        )
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        //Obtenemos un objeto con alcance global del mapa
+        map = googleMap
+        createMarker()
+        updateOrRequestPermissions()
+    }
+
+
+    /*
+    override fun onLocationChanged(location: Location) {
+
+        map.clear()
+        val coordinates = LatLng(location.latitude, location.longitude)
+        val marker = MarkerOptions()
+            .position(coordinates)
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.person))
+
+        map.addMarker(marker)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 18f))
+    }
+
+     */
+
+
 }

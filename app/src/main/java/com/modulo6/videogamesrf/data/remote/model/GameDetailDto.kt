@@ -32,5 +32,11 @@ data class GameDetailDto(
     val grupoHuevo: String,
 
     @SerializedName("generacion")
-    val generacion: Int
+    val generacion: Int,
+
+    @SerializedName("latitud")
+    val latitud: Double,
+
+    @SerializedName("longitud")
+    val longitud: Double
 )
