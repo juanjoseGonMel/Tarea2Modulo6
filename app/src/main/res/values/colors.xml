@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="backgrounLogin">#707070</color>
+    <color name="incColor">#04336a</color>
+    <color name="logo1color">#707070</color>
+    <color name="logo2color">#8102b7</color>
+    <color name="sublogocolor">#001764</color>
+    <color name="btnIngresarColor">#ffffff</color>
+    <color name="btnResgiBackColor">#440877</color>
+    <color name="btnresetPassColor">#0E66CC</color>
 </resources>

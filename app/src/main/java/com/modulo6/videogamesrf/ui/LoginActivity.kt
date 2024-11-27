@@ -67,12 +67,12 @@ class LoginActivity : AppCompatActivity() {
             firebaseAuth.createUserWithEmailAndPassword(email, contrasenia)
                 .addOnCompleteListener { authResult ->
                     if (authResult.isSuccessful){
-                        message("Usuario creado exitosamente")
+                        message(getString(R.string.userSussccess))
                         //Enviamos un correo para verificar la direcion de email
                         firebaseAuth.currentUser?.sendEmailVerification()?.addOnSuccessListener {
-                            message("El correo de verificacion ha sido enviado")
+                            message(getString(R.string.correoVerificacion))
                         }?.addOnFailureListener{
-                            message("No se pudo enviar el correo de verificacion")
+                            message(getString(R.string.correoVerificacionNoEnviado))
                         }
                         actionLoginSuccessful()
                     }else{
@@ -113,33 +113,28 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-
-
-
-
-
     private fun validateFields(): Boolean{
         email = binding.tietEmail.text.toString().trim()  //Elimina los espacios en blanco
         contrasenia = binding.tietContrasenia.text.toString().trim()
 
         //Verifica que el campo de correo no esté vacío
         if(email.isEmpty()){
-            binding.tietEmail.error = "Se requiere el correo"
+            binding.tietEmail.error = getString(R.string.msgErrornoEmail)
             binding.tietEmail.requestFocus()
             return false
         }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            binding.tietEmail.error = "El correo no tiene un formato válido"
+            binding.tietEmail.error = getString(R.string.msgErrornoValido)
             binding.tietEmail.requestFocus()
             return false
         }
 
         //Verifica que el campo de la contraseña no esté vacía y tenga al menos 6 caracteres
         if(contrasenia.isEmpty()){
-            binding.tietContrasenia.error = "Se requiere una contraseña"
+            binding.tietContrasenia.error = getString(R.string.msgErrornoPass)
             binding.tietContrasenia.requestFocus()
             return false
         }else if(contrasenia.length < 6){
-            binding.tietContrasenia.error = "La contraseña debe tener al menos 6 caracteres"
+            binding.tietContrasenia.error = getString(R.string.WeakPass)
             binding.tietContrasenia.requestFocus()
             return false
         }
@@ -157,42 +152,42 @@ class LoginActivity : AppCompatActivity() {
 
         when(errorCode){
             "ERROR_INVALID_EMAIL" -> {
-                Toast.makeText(this, "Error: El correo electrónico no tiene un formato correcto", Toast.LENGTH_SHORT).show()
-                binding.tietEmail.error = "Error: El correo electrónico no tiene un formato correcto"
+                Toast.makeText(this, getString(R.string.InvalidEmail), Toast.LENGTH_SHORT).show()
+                binding.tietEmail.error = getString(R.string.InvalidEmail)
                 binding.tietEmail.requestFocus()
             }
             "ERROR_WRONG_PASSWORD" -> {
-                Toast.makeText(this, "Error: La contraseña no es válida", Toast.LENGTH_SHORT).show()
-                binding.tietContrasenia.error = "La contraseña no es válida"
+                Toast.makeText(this, getString(R.string.WrongPass), Toast.LENGTH_SHORT).show()
+                binding.tietContrasenia.error = getString(R.string.WrongPass)
                 binding.tietContrasenia.requestFocus()
                 binding.tietContrasenia.setText("")
 
             }
             "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> {
                 //An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.
-                Toast.makeText(this, "Error: Una cuenta ya existe con el mismo correo, pero con diferentes datos de ingreso", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.AcountExist), Toast.LENGTH_SHORT).show()
             }
             "ERROR_EMAIL_ALREADY_IN_USE" -> {
-                Toast.makeText(this, "Error: el correo electrónico ya está en uso con otra cuenta.", Toast.LENGTH_LONG).show()
-                binding.tietEmail.error = ("Error: el correo electrónico ya está en uso con otra cuenta.")
+                Toast.makeText(this, getString(R.string.EmailinUse), Toast.LENGTH_LONG).show()
+                binding.tietEmail.error = (getString(R.string.EmailinUse))
                 binding.tietEmail.requestFocus()
             }
             "ERROR_USER_TOKEN_EXPIRED" -> {
-                Toast.makeText(this, "Error: La sesión ha expirado. Favor de ingresar nuevamente.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.userExpired), Toast.LENGTH_LONG).show()
             }
             "ERROR_USER_NOT_FOUND" -> {
-                Toast.makeText(this, "Error: No existe el usuario con la información proporcionada.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.UserNotFound), Toast.LENGTH_LONG).show()
             }
             "ERROR_WEAK_PASSWORD" -> {
-                Toast.makeText(this, "La contraseña porporcionada es inválida", Toast.LENGTH_LONG).show()
-                binding.tietContrasenia.error = "La contraseña debe de tener por lo menos 6 caracteres"
+                Toast.makeText(this, getString(R.string.WeakPass), Toast.LENGTH_LONG).show()
+                binding.tietContrasenia.error = getString(R.string.WeakPass)
                 binding.tietContrasenia.requestFocus()
             }
             "NO_NETWORK" -> {
-                Toast.makeText(this, "Red no disponible o se interrumpió la conexión", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.noNet), Toast.LENGTH_LONG).show()
             }
             else -> {
-                Toast.makeText(this, "Error. No se pudo autenticar exitosamente.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.errorNose), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -208,7 +203,7 @@ class LoginActivity : AppCompatActivity() {
 
             //Verificamos si fue exitosa la autentificacion.
             if (authResult.isSuccessful){
-                message("Autentificacion exitosa")
+                message(getString(R.string.auth_success))
                 actionLoginSuccessful()
             }else{
                 binding.progressBar.visibility = View.GONE
@@ -216,9 +211,5 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
-
 
 }

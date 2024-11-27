@@ -22,7 +22,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
 
 
 private const val GAME_ID = "game_id"
@@ -65,36 +64,6 @@ class GameDetailFragment : Fragment() {
 
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.accumula_town)
         mediaPlayer.start()
-
-        /*
-        gameId?.let { id ->
-            val call: Call<GameDetailDto> = repository.getGamesDetail(id)
-            call.enqueue(object : Callback<GameDetailDto>{
-                override fun onResponse(p0: Call<GameDetailDto>, response: Response<GameDetailDto>) {
-                    binding.pbLoading.visibility = View.GONE
-                    binding.tvTitle.text = getString(R.string.NombrePokemon) + ": " + response.body()?.nombre
-                    binding.tvLongDesc.text = getString(R.string.DescripcionPokemon) + ": " + response.body()?.descripcion
-                    binding.tvMov.text = getString(R.string.MovimientosPokemon) + ": " + response.body()?.movimientos
-                    binding.tvType.text = getString(R.string.TipoPokemon) + ": " + response.body()?.tipo
-                    binding.tvHuevo.text = getString(R.string.HuevoPokemon) + ": " + response.body()?.grupoHuevo
-                    binding.tvHabilidad.text = getString(R.string.HabilidadPokemon) + ": " + response.body()?.habilidades
-                    binding.tvGeneracion.text = getString(R.string.GeneracionPokemon) + ": " + response.body()?.generacion.toString()
-                    Glide.with(binding.root.context)
-                        .load(response.body()?.urlImagen)
-                        .into(binding.ivImage)
-
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                        binding.tvLongDesc.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
-
-                }
-
-                override fun onFailure(p0: Call<GameDetailDto>, p1: Throwable) {
-
-                }
-
-            })
-        }
-        */
 
     }
 

@@ -37,18 +37,16 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:text="i"
-                    android:textColor="#707070"
+                    android:text="@string/logo1"
+                    android:textColor="@color/logo1color"
                     android:textSize="75sp" />
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:text="Diplo"
-                    android:textColor="#8102b7"
+                    android:text="@string/logo2"
+                    android:textColor="@color/logo2color"
                     android:textSize="75sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -57,9 +55,9 @@
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cursos móviles"
+                android:text="@string/subLogo"
                 android:textAlignment="center"
-                android:textColor="#001764"
+                android:textColor="@color/sublogocolor"
                 android:textSize="20sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +68,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
-                android:hint="Correo electrónico"
+                android:hint="@string/Correo"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
@@ -94,7 +92,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
-                android:hint="Contraseña"
+                android:hint="@string/password"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
@@ -119,9 +117,9 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:backgroundTint="@android:color/holo_orange_dark"
-                android:text="Ingresar"
+                android:text="@string/btnIngresar"
                 android:textAllCaps="false"
-                android:textColor="#ffffff"
+                android:textColor="@color/btnIngresarColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:cornerRadius="16dp" />
@@ -133,10 +131,10 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
-                android:backgroundTint="#440877"
-                android:text="Registrarse"
+                android:backgroundTint="@color/btnResgiBackColor"
+                android:text="@string/btnRegistrar"
                 android:textAllCaps="false"
-                android:textColor="#ffffff"
+                android:textColor="@color/btnIngresarColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:cornerRadius="16dp" />
@@ -148,9 +146,9 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:text="¿Olvidó su contraseña? Restablecer aquí"
+                android:text="@string/ResetPassword"
                 android:textAlignment="center"
-                android:textColor="#0E66CC"
+                android:textColor="@color/btnresetPassColor"
                 android:textSize="16sp" />
 
             <View
@@ -161,7 +159,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="10dp"
-                android:background="#707070" />
+                android:background="@color/backgrounLogin" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -170,9 +168,9 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
-                android:text="© Diplo Móviles"
+                android:text="@string/incstring"
                 android:textAlignment="center"
-                android:textColor="#04336a"
+                android:textColor="@color/incColor"
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
